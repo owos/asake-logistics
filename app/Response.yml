@@ -1,0 +1,66 @@
+utter_happy:
+  - text: "Great, carry on!"
+  utter_goodbye:
+  - text: "Bye! Come back again soon. For more info, please call 07478131521 to speak with our Business manager"
+  utter_iamabot:
+  - text: "I am a bot, powered by Rasa."
+  utter_greet:
+  - text: "Hello, thanks for visiting, how can I help you today?"
+  utter_out_of_scope: #look up rule or story in the financial demo
+  - text: Sorry, I'm not sure how to respond to that. Type "help" for assistance.
+  utter_help:
+  - text: "I can help you open a service request ticket, or check the status of your open incidents. \nYou can ask me things like: \n- Open an incident \n- Help me reset my password \n- I'm having a issue with my email \n- What's the status of the ticket I opened?"
+  ### delivery_form
+  utter_ask_name:
+  - text: "What name do you want to associate with this order?"
+  utter_order_type: 
+  - text: "Are you sending a letter or a parcel"
+  utter_order_selection:
+  - text: "Please select: Letter - 150g, Large Letter - 1000g, Small Parcel - 3kg, Medium Parcel - 40kg, Large Parcel - >40kg"
+  utter_ask_departure:
+  - text: "Where are you sending it to?"
+  utter_pick_up:
+  - text: "We offer pick up service : which is suitable to pick up your shipment: Motorbike - Ideal for Letter - 150g and Small Parcel - 3kg, Van - Medium Parcel -40kg & Large Parcel - >40kg"
+  utter_pick_up_type:
+  - text: "A driver has been allocated to you, he will be there in one hour"
+  utter_pick_up_address:
+  - text: "Where would it be picked up from?"
+  utter_receiver_details:
+  - text: "Please write the receiver's name, phone number and address"
+  utter_ask_email_address:
+  - text: "What email address do you want to associate with this order?"
+  utter_ask_payment_method:
+  - text: "Great {name}, how would you like to make payment, cash or bank transfer?"
+  utter_bank_transfer:
+  - text: "Your order has been logged with bank transfer payment, your ID is {34578766}, please make 	payment with this order number to bla bla bla bank."
+  utter_cash_payment:
+  - text: "Your order has been logged with cash payment, your ID is {34578766}, please come along with your money when dropping of the item."
+  utter_anything_else:
+  - text: "Would you like me to help you with anything else?"
+  utter_great day: 
+  - text: "Okay then, do have a great day"
+  utter_ask_start_conversation:
+  - text: "What would you like me to help you with today?"
+  utter_shipping_cost:
+  - text: "We can do this, it will cost you 100 quid to make a delivery of {item_weight} from {departure} to {destination}, Would you like to place and order now?"
+  utter_complain:
+  - text: "Sorry that you faced trouble. We have noted your complain and one of customer support agent will call you"
+  utter_delivery:
+  - text: "We have different delivery options you can pick from: "Drop off to Drop off - Next Day, Drop off to Drop off - 48 Hours, Pick up and Delivery - 24 hours, Pick up and Delivery - 2pm, Pick up and Delivery - 10 am"
+  
+  utter_delivery_confirmation:
+  - text: "You will be notified an hour before your delivery"
+  utter_suggestion:
+  - text: "Please avail ID to enable us adjust"
+  utter_suggestion_confirmation:
+  - text: "This has been adjusted to your preference" 
+
+  utter_opening_hours: # change these to something meaningful
+  - text: "Our opening time is abcd"
+  utter_return: 
+  - text: "Oooops! Sorry about that please send me a picture and receipt, One of our customer support agent will contact you soon",
+  utter_cancellation:
+  - text: "You can only cancel your order as long as your order hasn't been dispatched"
+
+  utter_track_update: 
+  - text: "Hi{name}, This is to notify you that your parcel #123456 has been dispatched and you should get it in within the next hour."

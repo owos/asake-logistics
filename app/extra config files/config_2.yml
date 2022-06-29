@@ -11,14 +11,12 @@ pipeline:
 # If you'd like to customize it, uncomment and adjust the pipeline.
 # See https://rasa.com/docs/rasa/tuning-your-model for more information.
   - name: WhitespaceTokenizer
-  - name: RegexFeaturizer
-  - name: LexicalSyntacticFeaturizer
-  - name: CountVectorsFeaturizer
-  - name: CountVectorsFeaturizer
-    analyzer: char_wb
-    min_ngram: 1
-    max_ngram: 4
-  - name: DIETClassifier
+  - name: LanguageModelFeaturizer
+    # Name of the language model to use
+    model_name: "bert"
+    # Pre-Trained weights to be loaded input url
+    model_weights: "rasa/LaBSE"
+  - name: SpacyEntityExtractor
     epochs: 100
     constrain_similarities: true
   - name: EntitySynonymMapper

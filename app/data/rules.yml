@@ -1,4 +1,4 @@
-version: "2.0"
+version: "3.1"
 
 rules:
 
@@ -11,3 +11,22 @@ rules:
   steps:
   - intent: bot_challenge
   - action: utter_iamabot
+
+- rule: opening_hours
+  steps:
+  - intent: opening_hours
+  - action: utter_opening_hours
+
+- rule: Submit delivery_form
+  condition:
+  - active_loop: delivery_form
+  steps:
+  - action: delivery_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: utter_cash_payment
+  - action: utter_slot_values
+  - action: action_submit_send_item
+  - action: action_set_tracking_id
+    

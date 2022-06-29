@@ -10,15 +10,13 @@ pipeline:
 # No configuration for the NLU pipeline was provided. The following default pipeline was used to train your model.
 # If you'd like to customize it, uncomment and adjust the pipeline.
 # See https://rasa.com/docs/rasa/tuning-your-model for more information.
-  - name: WhitespaceTokenizer
-  - name: RegexFeaturizer
-  - name: LexicalSyntacticFeaturizer
-  - name: CountVectorsFeaturizer
-  - name: CountVectorsFeaturizer
-    analyzer: char_wb
-    min_ngram: 1
-    max_ngram: 4
-  - name: DIETClassifier
+  - name: "WhitespaceTokenizer"
+  - name: "ConveRTFeaturizer"
+    # Remote URL/Local directory of model files(Required)
+    model_url: None
+  - name: "CountVectorsFeaturizer"
+  - name: "EmbeddingIntentClassifier"
+  - name: MitieEntityExtractor  #####change
     epochs: 100
     constrain_similarities: true
   - name: EntitySynonymMapper
