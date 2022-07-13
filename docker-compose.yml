@@ -14,7 +14,7 @@ services:
     # public: true
     restart: unless-stopped
     ports:
-      - '5005:8081'
+      - '5005:5005'
     command: run --enable-api --cors "*"
   # ================================= Actions =================================
   # Rasa middleware used to connect with external APIs.
