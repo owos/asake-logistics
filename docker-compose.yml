@@ -15,7 +15,7 @@ services:
     restart: unless-stopped
     ports:
       - '5005:8081'
-    command: run --enable-api --cors "*"
+    command: bash -c "rm -rf models/* && rasa train && rasa run --enable-api --cors \"*\" -p 8081"
   # ================================= Actions =================================
   # Rasa middleware used to connect with external APIs.
   actions:
