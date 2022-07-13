@@ -1,0 +1,10 @@
+name: rasa-server
+command: bash
+volumes:
+- /root/.cache/pip
+sync:
+- .:/app
+forward:
+- 8081:8081
+reverse:
+- 9000:9000
