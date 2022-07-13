@@ -1,5 +1,6 @@
 FROM rasa/rasa:3.1.0-full
 
+WORKDIR /app
 USER root
 COPY ./bot /app
 

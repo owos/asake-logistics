@@ -6,5 +6,6 @@ COPY ./bot/actions /app/actions
 
 RUN python3 -m pip install pymongo 
 RUN python3 -m pip install "pymongo[srv]"
+RUN python3 -m pip install python-dotenv
 
 USER 1001
