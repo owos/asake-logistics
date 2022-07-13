@@ -1,73 +1,65 @@
-# Rasa NLU server template
+# Chatbot Hogwarts :speech_balloon:
+## Informações
+- Autor : João Paulo Wakugawa 
+- API : <a href="http://hp-api.herokuapp.com/">Harry-Potter</a>
+- Link do Okteto : <a href="https://web-jpwakugawa.cloud.okteto.net/">Chat de Hogwarts</a>
 
-This template contains all you need to deploy [Rasa NLU](https://rasa.com/) server on [Heroku cloud](https://heroku.com) to make your Rasa project visible globally.
+---
 
-## How to use
+## Funcionamento
+O chatbot recepciona o usuário em Hogwarts e oferece um tour pela escola, o usúario pode escolher a entre as casas Grifinória, Sonserina, Corvinal e Lufa-lufa, feito isso o bot seleciona um personagem aleátorio da casa escolhida para acompanhar o convidado, também é possível vizualizar o histórico dos personagens que acompanharam os convidados.
 
-Click on the button below to deploy this template on your Heroku instance.
-Heroku will automatically build the Docker image and your project's NLU model.
+---
 
-[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+# Desenvolvimento :red_circle:
+## Actions 
+### action_show_character 
+Responsável por selectionar um personagem aleátorio da api, mostrar o personagem e guardá-lo no banco de dados.
+### action_show_history 
+Responsável por mostrar todos os personagem que foram armazenados no banco de dados. 
 
-_It takes a couple of minutes to build and start the server. You can see the progress in Heroku logs._
+---
 
-## How to make requests
-
-Once your server is deployed, you can make requests to your NLU model via [Rasa HTTP API](https://rasa.com/docs/rasa/api/http-api/#operation/parseModelMessage)
-For example:
-
-`curl https://<your Heroku application name>.herokuapp.com/model/parse -d '{"text":"hello"}'`
-
-## How to change the model
-
-Once you've deployed and tested your NLU server, you can then clone it to your machine and make changes in NLU model.
-
-### 1. Clone the application
-
-Install [git](https://git-scm.com/downloads) and [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli#download-and-install).
-Run a terminal (or console) on your machine and type
-
+## Utilizando o Rasa
 ```
-heroku login
-heroku git:clone -a <your Heroku application name>
-cd <your Heroku application name>
-git remote add origin https://github.com/just-ai/rasa-heroku-template
-git pull origin master
+$ rasa init            // Criando uma pasta com config iniciais
+$ rasa train           // Treinando o modelo
+    --fixed-model-name // Flag para gerar modelo com nome específico
+$ rasa run actions     // Lembrar de reiniciar sempre que houver alterações
+$ rasa shell           // Testando as funcionalidades do modelo
+    -vv                // Flag para mostrar mais detalhes
+$ rasa interactive     // Auxilia na definição de uma story 
 ```
 
-_You have to do these steps only once per project._
-
-### 2. Make changes
-
-#### Install Rasa
-
-Install Rasa on your machine. Here is a great [installation guide](https://rasa.com/docs/rasa/user-guide/installation/).
-
-#### Train NLU model
-
-Then go to the directory of your application (cloned on the previous step) and make some changes in the model.
-Please refer to the [Rasa documentaion](https://rasa.com/docs/rasa/user-guide/rasa-tutorial/) to learn how to build and evaluate NLU model.
-
-> Please note that you don't have to run **rasa init** command once your template project is already cloned from Heroku.
-Also note that NLU server doesn't run any actions - it only runs your NLU model. Thus you can use only **rasa train nlu** command.
-
-#### Evaluate changes
-
-To evaluate your changes on your local machine just run NLU server locally and make some HTTP requests to the [Rasa HTTP API endpoint](https://rasa.com/docs/rasa/http-api).
-You can also use [shell command](https://rasa.com/docs/rasa/command-line-interface#rasa-shell) to try your mddel without running a server.
-
-#### Push changes to Heroku
-
-Once you've trained and evaluated your NLU model, you can push changes to Heroku.
-
-Run the next commands in the terminal
-
+## Utilizando o Webchat
 ```
-git add .
-git commit -am "some comments"
-git push
+$ rasa run actions                   // Servidor responsável pelas actions
+$ rasa run --enable-api --cors="*"   // Liberando comunicação entre os servidores
+$ python3 -m http.server             // Servidor Front-end
+```
+## Utilizando o Docker
+O bot-3 realiza a integração do bot-2 em docker, subindo a aplicação em 4 partes:
+- Rasa
+- Actions
+- Web 
+- Ngrok
+```
+$ docker-compose up // Subindo a aplicação localmente
 ```
 
-Heroku will automatically handle the changes, re-build NLU model and re-start the server.
+## Utilizando o Okteto
+- A aplicacão pode ser acessada através do <a href="">Okteto</a>.
+```
+$ okteto stack deploy --build // Buildando do docker-compose
+```
 
-> Please note that locally trained NLU models won't be pushed to the Heroku repository.
+---
+
+## Tecnologias e depêndencias :books:
+- <a href="https://rasa.com/docs/rasa/installation/">Rasa</a>
+- <a href="https://docs.python.org/3/">Python</a>
+- <a href="https://docs.mongodb.com/">MongoDB</a>
+- <a href="https://pymongo.readthedocs.io/en/stable/index.html">Pymongo</a>
+- <a href="https://github.com/scalableminds/chatroom">Chatroom</a>
+- <a href="https://docs.docker.com/">Docker</a>
+- <a href="https://okteto.com/docs/getting-started/index.html">Okteto</a>

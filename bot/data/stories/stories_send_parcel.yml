@@ -1,0 +1,44 @@
+version: "3.1"
+
+stories:
+
+- story: happy path
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_great
+  - action: utter_happy
+
+
+- story: activate delivery form
+  steps:
+  - intent: send_parcel
+  - action: utter_start_logging
+  - intent: affirm
+  - action: delivery_form
+  - active_loop: delivery_form
+  - slot_was_set:
+    - confirm_booking: False
+  - action: action_deactivate_loop
+
+- story: greet and activate delivery form
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: send_parcel
+  - action: utter_start_logging
+  - intent: affirm
+  - action: delivery_form
+  - active_loop: delivery_form
+  - slot_was_set:
+    - confirm_booking: False
+  - action: action_deactivate_loop
+
+- story: deny delivery form
+  steps:
+  - intent: send_parcel
+  - action: utter_start_logging
+  - intent: deny
+  - action: utter_goodbye
+  - action: action_end
+

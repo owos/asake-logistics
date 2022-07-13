@@ -1,0 +1,45 @@
+version: "3"
+
+services:
+  # ================================= Bot =====================================
+  # Generic Rasa bot, used to run console for example.
+  bot:
+    build:
+      context: .
+      dockerfile: ./docker/bot.Dockerfile
+    depends_on:
+      - actions
+    networks: 
+      - production
+    # public: true
+    restart: unless-stopped
+    ports:
+      - 5005:5005
+    command: run --enable-api --cors "*"
+  # ================================= Actions =================================
+  # Rasa middleware used to connect with external APIs.
+  actions:
+    build:
+      context: .
+      dockerfile: ./docker/actions.Dockerfile
+    ports:
+      - 5055:5055
+    networks:
+      - production
+  # ================================= Website =================================
+  # Simple website with Rasa chat widget.
+  web:
+    build:
+      context: . 
+      dockerfile: ./docker/web.Dockerfile
+    ports:
+      - 3000:3000
+    networks:
+      - production
+    depends_on:
+      - bot
+      - actions
+
+networks: 
+    production:
+        driver: bridge
