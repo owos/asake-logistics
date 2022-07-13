@@ -3,7 +3,7 @@ version: "3"
 services:
   # ================================= Bot =====================================
   # Generic Rasa bot, used to run console for example.
-  bot:
+  rasa-server:
     build:
       context: .
       dockerfile: ./docker/bot.Dockerfile
