@@ -35,7 +35,7 @@ $ rasa interactive     // Auxilia na definição de uma story
 ```
 $ rasa run actions                   // Servidor responsável pelas actions
 $ rasa run --enable-api --cors="*"   // Liberando comunicação entre os servidores
-$ python3 -m http.server             // Servidor Front-end
+$ python3 -m http.server             // Server Front-end
 ```
 ## Utilizando o Docker
 O bot-3 realiza a integração do bot-2 em docker, subindo a aplicação em 4 partes:
