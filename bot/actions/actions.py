@@ -26,9 +26,9 @@ import json
 
 load_dotenv()
 
-airtable_api_key = os.getenv("AIRTABLE_API_KEY")
-base_id = os.getenv("BASE_ID")
-table_name = os.getenv("TABLE_NAME")
+airtable_api_key = "keyaBsw18laM26RJw"#os.getenv("AIRTABLE_API_KEY")
+base_id = "appYg9u6AyKu7LQV0"#os.getenv("BASE_ID")
+table_name = "Table%201"#os.getenv("TABLE_NAME")
 
 
 
