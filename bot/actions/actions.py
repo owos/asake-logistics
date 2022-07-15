@@ -236,7 +236,7 @@ class SetTrackingID(Action):
         #getting tracking ID from th
         #print(airtable_download(generated_id=id))
         print("the id is: ", id)
-        tracking_id = airtable_download(generated_id=id)
+        tracking_id = airtable_download(generated_id=id)['recordid']
         print(tracking_id)#['recordid']
         
         dispatcher.utter_message(f"Thanks, your answers have been recorded! Your tracking ID is {tracking_id}, please come along with your money when dropping of the item.") # message to the user about the form
