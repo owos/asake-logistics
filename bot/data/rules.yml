@@ -26,10 +26,13 @@ rules:
   - slot_was_set:
     - requested_slot: null
     - confirm_booking: true
+  #- action: action_price_and_distance
   - action: utter_slot_values
   - action: action_submit_send_item
   - action: action_set_tracking_id
   - action: action_end
+
+  #- action: action_end
 
 - rule: Submit delivery_form halfway
   condition:
@@ -40,6 +43,6 @@ rules:
   - slot_was_set:
     - confirm_booking: false
   - action: utter_goodbye
-  - action: action_end
+  #- action: action_end
 
     

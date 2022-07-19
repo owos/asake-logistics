@@ -14,15 +14,17 @@ import datetime as dt
 from typing import Dict, Text, List
 
 from rasa_sdk import Tracker, FormValidationAction
-from rasa_sdk.events import EventType, AllSlotsReset, SlotSet, Restarted
+from rasa_sdk.events import EventType, AllSlotsReset, SlotSet, Restarted, FollowupAction
 from rasa_sdk.executor import CollectingDispatcher, Action
 from rasa_sdk.types import DomainDict
 import random
+import pgeocode
 import uuid
 from dotenv import load_dotenv
 import os
 import requests
 import json
+import re
 
 load_dotenv()
 
@@ -35,8 +37,9 @@ table_name = "Table%201"#os.getenv("TABLE_NAME")
 
 
 
-
-def create_send_item_log(id, sender_name, sender_email_address, pickup_address, item, item_weight, receiver_name, receiver_phone, receiver_address):
+def create_send_item_log(id, sender_name, sender_email_address, pickup_address, 
+                         item, item_weight, receiver_name, receiver_phone, receiver_address,
+                         sending_distance, sending_price):
     request_url = f"https://api.airtable.com/v0/{base_id}/{table_name}"
                   
 
@@ -59,8 +62,9 @@ def create_send_item_log(id, sender_name, sender_email_address, pickup_address, 
             "item_weight": item_weight,
             "receiver_name": receiver_name,
             "receiver_phone": receiver_phone,
-            "receiver_address": receiver_address
-
+            "receiver_address": receiver_address,
+            "sending_distance": sending_distance,
+            "sending_price": sending_price
             
         }
     }
@@ -156,7 +160,7 @@ def airtable_download(generated_id=None, params_dict={}, table=table_name, api_k
         airtable_response = response.json()
 
         try:
-            airtable_records += (airtable_response['records'][-5:])
+            airtable_records += (sorted(airtable_response['records'], key=lambda d: d['createdTime'])[-5:])
         except:
             if 'error' in airtable_response:
                 #identify_errors(airtable_response)
@@ -175,6 +179,147 @@ def airtable_download(generated_id=None, params_dict={}, table=table_name, api_k
             
     return output
 
+
+
+
+
+
+# the idea of the tracking Id is that it is first sent to the airtable database
+# included in it  with a temporary ID, the data is then called back and queried with the temporary ID in order to get the original ID. which is the record ID.
+class SetTrackingID(Action): 
+    def name(self)-> Text:
+        return "action_set_tracking_id"    
+
+
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Dict]:
+       
+        #getting tracking ID from th
+        #print(airtable_download(generated_id=id))
+        print("the id is: ", id)
+        tracking_id = airtable_download(generated_id=id)['recordid']
+        print(tracking_id)#['recordid']
+        
+        dispatcher.utter_message(f"Thanks, your answers have been recorded! Your tracking ID is {tracking_id}, please come along with your money when dropping of the item.") # message to the user about the form
+        return [SlotSet("tracking_id", tracking_id)]
+
+
+
+
+# class ActionHelloWorld(Action):
+#
+#     def name(self) -> Text:
+#         return "action_hello_world"
+#
+#     def run(self, dispatcher: CollectingDispatcher,
+#             tracker: Tracker,
+#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+#
+#         dispatcher.utter_message(text="Hello World!")
+#
+#         return []
+
+class ValidateDeliveryForm(FormValidationAction):
+    def name(self)-> Text:
+        return "validate_delivery_form"
+    
+    def validate_receiver_phone(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict) -> Dict[Text, Any]:
+        
+
+        try:
+            regex_post = "([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})"
+            #getting slot values and extracting post codes
+            pick_add = tracker.get_slot("pickup_address")
+            match = re.search(regex_post, pick_add)
+            pick_post = pick_add[match.start():match.end()]
+
+            receive_add = tracker.get_slot("receiver_address")
+            match = re.search(regex_post, receive_add)
+            receive_post = receive_add[match.start():match.end()]
+            
+            #calculating distance
+            dist = pgeocode.GeoDistance('GB')
+            total_dist = dist.query_postal_code(pick_post, receive_post)/1000 +1 #in m
+            #setting price
+            price = 1 #in pounds
+            weight = tracker.get_slot("item_weight") #in kg
+            total_price = price * float(total_dist) * float(weight)
+            dispatcher.utter_message(f"We can do this, it might cost you  £{total_price} to make a delivery")
+        except:
+            pass
+
+        return {"receiver_phone": slot_value}
+
+    def validate_confirm_booking(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict) -> Dict[Text, Any]:
+        
+        if slot_value != True:
+            return {"requested_slot": None}
+        else:
+            return {"confirm_booking": slot_value}
+    
+    def validate_item_weight(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict) -> Dict[Text, Any]:
+        
+        try:
+            int_weight = re.findall('[0-9]+', slot_value)
+            return {"item_weight": int_weight[0]}
+        except:
+            return {"item_weight": slot_value}
+    
+
+
+#set price and distance from post codes
+class SetPriceandDistance(Action): 
+    def name(self)-> Text:
+        return "action_price_and_distance"    
+
+
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Dict]:
+        
+        try:
+            regex_post = "([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})"
+            #getting slot values and extracting post codes
+            pick_add = tracker.get_slot("pickup_address")
+            match = re.search(regex_post, pick_add)
+            pick_post = pick_add[match.start():match.end()]
+
+            receive_add = tracker.get_slot("receiver_address")
+            match = re.search(regex_post, receive_add)
+            receive_post = receive_add[match.start():match.end()]
+            
+            #calculating distance
+            dist = pgeocode.GeoDistance('GB')
+            total_dist = dist.query_postal_code(pick_post, receive_post)/1000 +1 #in m
+            #setting price
+            price = 1 #in pounds
+            weight = tracker.get_slot("item_weight") #in kg
+            total_price = price * float(total_dist) * float(weight)
+            return [SlotSet("sending_distance", total_dist), SlotSet("sending_price", total_price)]
+        except:
+            return [SlotSet("sending_distance", 1), SlotSet("sending_price", 1)]
 
 
 
@@ -198,7 +343,8 @@ class ActionSubmitSendItem(Action):
         sender_name = tracker.get_slot("sender_name")
         receiver_name = tracker.get_slot("receiver_name")
         receiver_phone = tracker.get_slot("receiver_phone")
-        
+        sending_distance = tracker.get_slot("sending_distance")
+        sending_price = tracker.get_slot("sending_price")
          #generate global unique ID before submitting
         global id 
         id = str(uuid.uuid4())
@@ -212,67 +358,14 @@ class ActionSubmitSendItem(Action):
                 sender_email_address=sender_email_address,
                 sender_name=sender_name,
                 receiver_name=receiver_name,
-                receiver_phone = receiver_phone
+                receiver_phone = receiver_phone,
+                sending_distance=sending_distance,
+                sending_price = sending_price
                 
             )
-
         dispatcher.utter_message("Thanks, your answers have been recorded!") # message to the user about the form
         return []
 
-# the idea of the tracking Id is that it is first sent to the airtable database
-# included in it  with a temporary ID, the data is then called back and queried with the temporary ID in order to get the original ID. which is the record ID.
-class SetTrackingID(Action): 
-    def name(self)-> Text:
-        return "action_set_tracking_id"    
-
-
-    def run(
-        self,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> List[Dict]:
-       
-        #getting tracking ID from th
-        #print(airtable_download(generated_id=id))
-        print("the id is: ", id)
-        tracking_id = airtable_download(generated_id=id)['recordid']
-        print(tracking_id)#['recordid']
-        
-        dispatcher.utter_message(f"Thanks, your answers have been recorded! Your tracking ID is {tracking_id}, please come along with your money when dropping of the item.") # message to the user about the form
-        return[SlotSet("tracking_id", tracking_id)]
-
-
-
-
-# class ActionHelloWorld(Action):
-#
-#     def name(self) -> Text:
-#         return "action_hello_world"
-#
-#     def run(self, dispatcher: CollectingDispatcher,
-#             tracker: Tracker,
-#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-#
-#         dispatcher.utter_message(text="Hello World!")
-#
-#         return []
-
-class ValidateDeliveryForm(FormValidationAction):
-    def name(self)-> Text:
-        return "validate_delivery_form"
-    
-    def validate_confirm_booking(
-        self,
-        slot_value: Any,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: DomainDict) -> Dict[Text, Any]:
-        
-        if slot_value != True:
-            return {"requested_slot": None}
-        else:
-            return {"confirm_booking": slot_value}
 
 # get tracking status
 class GetTrackingStatus(Action): 
@@ -299,7 +392,7 @@ class GetTrackingStatus(Action):
 
 
 # request cancel order
-class GetTrackingStatus(Action): 
+class CancelOrder(Action): 
     def name(self)-> Text:
         return "action_request_cancel_order"    
 
@@ -361,4 +454,4 @@ class ActionEnd(Action):
         return "action_end"
 
     async def run(self, dispatcher, tracker, domain):
-        return [AllSlotsReset(), Restarted()]
+        return [AllSlotsReset(), Restarted(), FollowupAction("action_restart")]

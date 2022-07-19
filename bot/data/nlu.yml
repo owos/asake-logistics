@@ -115,24 +115,6 @@ nlu:
     - not
     - I am not
     - no, I am not
-- intent: mood_great
-  examples: |
-    - perfect
-    - great
-    - amazing
-    - feeling like a king
-    - wonderful
-    - I am feeling very good
-    - I am great
-    - I am amazing
-    - I am going to save the world
-    - super stoked
-    - extremely good
-    - I am fine, thank you
-    - I am fine
-    - so so perfect
-    - so good
-    - so perfect
 - intent: thankyou
   examples: |
     - okay great thanks
@@ -168,15 +150,6 @@ nlu:
     - Where is the nearest drop off address?
     - Where can i drop off my product?
     - What is nearest dropoff point?
-- intent: not_talking2u
-  examples: |
-    - I am not talking to you",
-    - I was not talking to you",
-    - Not talking to you",
-    - Wasn't for you",
-    - Wasn't meant for you",
-    - Wasn't communicating to you",
-    - Wasn't speaking to you"
 - intent: inform
   examples: |
     - What is nearest drop off point?
@@ -185,6 +158,20 @@ nlu:
     - I will be shipping a [diamond](item)
     - What I want to send is a [document](item)
     - The item I want to send is a [stone](item)
+    - I want to dispatch [wig](item)
+    - I am sending a [food](item)
+    - I am sending a [bag](item)
+    - I want to send [dress](item)
+    - Can i send a [shirt](item)
+    - I want to send [clothes](item)
+    - I want to dispatch [Trouser](item)
+    - I will like to ship [Baby Clothes](item)
+    - I want to ship [Attire](item)
+    - I will be shipping [Make up](item)
+    - I am to ship [Charger](item)
+    - I am shipping [Phone](item)
+    - I am sending [Pen](item)
+    - I will be shipping a [diamond](item)
     - the parcel is [40kg](item_weight)
     - the parcel weighs [5kg](item_weight)
     - 1 Carnaby Street, LONDON, W1F 9PS, UK
@@ -285,6 +272,19 @@ nlu:
     - help pls
     - help?
     - hep me
+- intent: stop_quit #to be added to domain
+  examples: |
+    - I am no longer interested
+    - I want to quit
+    - I want to stop
+    - Please stop the process
+    - Please quit the process
+    - Stop
+    - Cancel
+    - Not doing again
+    - No longer interested
+    - Cancel the process
+    - I am not sending again.
 - intent: out_of_scope #to be added to domain
   examples: |
     - what is the square root of 5

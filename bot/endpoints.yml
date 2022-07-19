@@ -1,4 +1,4 @@
 # This file contains the different endpoints your bot can use.
 
 action_endpoint:
-  url: "https://actions-owos.cloud.okteto.net/webhook"
+  url: "http://actions:5055/webhook"

@@ -6,8 +6,8 @@ stories:
   steps:
   - intent: greet
   - action: utter_greet
-  - intent: mood_great
-  - action: utter_happy
+  - intent: help
+  - action: utter_help
 
 
 - story: activate delivery form
@@ -33,6 +33,21 @@ stories:
   - slot_was_set:
     - confirm_booking: False
   - action: action_deactivate_loop
+
+- story: greet and activate delivery form and stop if there is a cancel request
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: send_parcel
+  - action: utter_start_logging
+  - intent: affirm
+  - action: delivery_form
+  - active_loop: delivery_form
+  - intent: stop_quit
+  - action: action_deactivate_loop
+  - active_loop: null
+  - action: utter_goodbye
+  - action: action_end
 
 - story: deny delivery form
   steps:

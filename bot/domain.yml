@@ -10,8 +10,7 @@ intents:
       - tracking_id
       - item
       - Item_weight
-      - sendrer_email_address
-      - tracking_id
+      - sender_email_address
 - mood_great
 - nearest_dropoff
 - opening_hours
@@ -21,6 +20,7 @@ intents:
 - request_cancel_order
 - help
 - make_complain
+- stop_quit
 entities:
 - tracking_id
 - item
@@ -122,7 +122,7 @@ slots:
         requested_slot: payment_method
   tracking_id:
     type: text
-    influence_conversation: true
+    influence_conversation: false
     mappings:
     - type: custom
   anything_else:
@@ -130,6 +130,20 @@ slots:
     influence_conversation: true
     mappings:
     - type: custom
+  sending_distance:
+    type: float
+    initial_value: 0
+    influence_conversation: false
+    mappings:
+    - type: custom
+  sending_price:
+    type: float
+    initial_value: 0
+    influence_conversation: true
+    mappings:
+    - type: custom
+  
+  
 forms:
   delivery_form:
     required_slots:
@@ -143,6 +157,7 @@ forms:
     - receiver_phone
     - confirm_booking
     - payment_method
+    
 responses:
   utter_happy:
   - text: Great, carry on!
@@ -151,7 +166,7 @@ responses:
   utter_iamabot:
   - text: I am a bot, powered by Rasa.
   utter_greet:
-  - text: Hello, thanks for visiting, how can I help you today?
+  - text: Hello, thanks for visiting, how can I help you today? (if you're not, you can just type help)
   utter_out_of_scope:
   - text: Sorry, I'm not sure how to respond to that. Type "help" for assistance.
   utter_help:
@@ -164,15 +179,15 @@ responses:
       - What's the status of the ticket I opened? I want to make a comaplain
    
   utter_ask_sender_name:
-  - text: What name do you want to associate with this order?
+  - text: What is the senders name?
   utter_ask_item:
   - text: What  would you like to send?
   utter_ask_item_weight:
   - text: Nice, what is the weight of the goods you want to send in kg (we do not take more than 500kg)?
   utter_ask_receiver_address:
-  - text: Where are you sending it to?
+  - text: Where are you sending it to (e.g 1 Carnaby Street, LONDON, W1F 9PS, UK)?
   utter_ask_pickup_address:
-  - text: Where would it be picked up from?
+  - text: Where would it be picked up from (e.g 20 Carnaby Street, LONDON, W1F 9PS, UK)?
   utter_ask_receiver_name:
   - text: What is the name of the receiver?
   utter_ask_receiver_phone:
@@ -188,7 +203,7 @@ responses:
   utter_ask_anything_else:
   - text: Would you like me to help you with anything else?
   utter_ask_confirm_booking:
-  - text: We can do this, it might cost you 100 quid (subject to change) to make a delivery of {item_weight}kg from {receiver_address} to {pickup_address}, Would you like to place and order now?
+  - text:  Would you like to place and order now?
   utter_no_worries:
   - text: No problem :)
   utter_start_logging:
@@ -206,6 +221,7 @@ responses:
        - Receviver's Name: {receiver_phone}
        - Sender's Name: {sender_name}
        - Payment method: {payment_method}
+       - Price: {sending_price}
   utter_request_id:
   - text: Sure then, please give me the tracking ID
   utter_confirm_cancel_order:
@@ -217,15 +233,18 @@ responses:
 
 
 actions:
+- action_end
 - action_get_tracking_status
+- action_make_complain
+- action_request_cancel_order
+- action_price_and_distance
 - action_set_tracking_id
 - action_submit_send_item
 - utter_greet
 - utter_request_id
+- utter_slot_values
+- utter_start_logging
 - validate_delivery_form
-- action_request_cancel_order
-- action_make_complain
-- action_end
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true

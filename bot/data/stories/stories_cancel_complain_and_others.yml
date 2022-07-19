@@ -1,0 +1,49 @@
+version: "3.1"
+
+stories:
+
+- story: track parcel
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: track_parcel
+  - action: utter_request_id
+  - intent: inform
+  - action: action_get_tracking_status
+
+- story: track parcel 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: track_parcel
+  - action: utter_request_id
+  - intent: inform
+    entities:
+    - tracking_id
+  - action: action_get_tracking_status
+
+- story: request cancel order
+  steps:
+  - intent: greet
+  - action: utter_greet 
+  - intent: request_cancel_order
+  - action: utter_confirm_cancel_order
+  - intent: affirm
+  - action: utter_request_id
+  - intent: inform
+    entities:
+    - tracking_id
+  - action: action_request_cancel_order
+
+- story: make a complain
+  steps:
+  - intent: greet
+  - action: utter_greet 
+  - intent: make_complain
+  - action: utter_confirm_make_complain
+  - intent: affirm
+  - action: utter_request_id
+  - intent: inform
+    entities:
+    - tracking_id
+  - action: action_make_complain
