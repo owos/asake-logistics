@@ -32,8 +32,6 @@ rules:
   - action: action_set_tracking_id
   - action: action_end
 
-  #- action: action_end
-
 - rule: Submit delivery_form halfway
   condition:
   - active_loop: delivery_form
@@ -43,6 +41,6 @@ rules:
   - slot_was_set:
     - confirm_booking: false
   - action: utter_goodbye
-  #- action: action_end
+  - action: action_end
 
     
