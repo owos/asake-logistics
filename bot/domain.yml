@@ -124,7 +124,7 @@ slots:
     type: text
     influence_conversation: false
     mappings:
-    - type: custom
+    - type: from_text
   anything_else:
     type: text
     influence_conversation: true
@@ -222,7 +222,7 @@ responses:
        - Sender's Name: {sender_name}
        - Payment method: {payment_method}
        - Price: {sending_price}
-  utter_request_id:
+  utter_ask_tracking_id:
   - text: Sure then, please give me the tracking ID
   utter_confirm_cancel_order:
   - text: Are you sure you want to cancel your shipping order?

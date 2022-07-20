@@ -210,6 +210,7 @@ nlu:
     - my shipment id is [rectzaIuGBmxgQL6p](tracking_id)
     - [rectzaIuGBmxgQL6p](tracking_id)
     - [recwTyLeX5wXHkIFb](tracking_id)
+    - [recYrrNkoLGIF4QyS]
     - [recpjRl4EWSugwBbZ](tracking_id) is my id
     - my tracking id is [rectzaIuGBmxgQL6p](tracking_id)
 - intent: send_parcel

@@ -7,20 +7,25 @@ stories:
   - intent: greet
   - action: utter_greet
   - intent: track_parcel
-  - action: utter_request_id
+  - action: utter_ask_tracking_id
   - intent: inform
+  - slot_was_set:
+    - tracking_id
   - action: action_get_tracking_status
+  - action: action_end
+  
 
 - story: track parcel 2
   steps:
   - intent: greet
   - action: utter_greet
   - intent: track_parcel
-  - action: utter_request_id
+  - action: utter_ask_tracking_id
   - intent: inform
-    entities:
+  - slot_was_set:
     - tracking_id
   - action: action_get_tracking_status
+  - action: action_end
 
 - story: request cancel order
   steps:
@@ -29,11 +34,12 @@ stories:
   - intent: request_cancel_order
   - action: utter_confirm_cancel_order
   - intent: affirm
-  - action: utter_request_id
+  - action: utter_ask_tracking_id
   - intent: inform
-    entities:
+  - slot_was_set:
     - tracking_id
   - action: action_request_cancel_order
+  - action: action_end
 
 - story: make a complain
   steps:
@@ -42,8 +48,9 @@ stories:
   - intent: make_complain
   - action: utter_confirm_make_complain
   - intent: affirm
-  - action: utter_request_id
+  - action: utter_ask_tracking_id
   - intent: inform
-    entities:
+  - slot_was_set:
     - tracking_id
   - action: action_make_complain
+  - action: action_end

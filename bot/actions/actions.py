@@ -257,7 +257,7 @@ class ValidateDeliveryForm(FormValidationAction):
         except:
             pass
 
-        return {"receiver_phone": slot_value}
+        return {"receiver_phone": slot_value}# , [SlotSet("sending_distance", total_dist), SlotSet("sending_price", total_price)]
 
     def validate_confirm_booking(
         self,
@@ -381,7 +381,7 @@ class GetTrackingStatus(Action):
     ) -> List[Dict]:
        
         #getting tracking ID from th
-        given_id = next(tracker.get_latest_entity_values("tracking_id"), None)
+        given_id = tracker.get_slot("tracking_id")
         print(given_id)
         try:
             item_status = airtable_download(record_id=given_id)['fields']['status']
@@ -405,7 +405,7 @@ class CancelOrder(Action):
     ) -> List[Dict]:
        
         #getting tracking ID from th
-        given_id = next(tracker.get_latest_entity_values("tracking_id"), None)
+        given_id = tracker.get_slot("tracking_id")
         print(given_id)
         data = {
             "fields": {
@@ -433,7 +433,7 @@ class GetTrackingStatus(Action):
     ) -> List[Dict]:
        
         #getting tracking ID from th
-        given_id = next(tracker.get_latest_entity_values("tracking_id"), None)
+        given_id = tracker.get_slot("tracking_id")
         print(given_id)
         data = {
             "fields": {
