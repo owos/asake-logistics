@@ -37,7 +37,7 @@ table_name = "Table%201"#os.getenv("TABLE_NAME")
 
 
 
-ef create_send_item_log(id, sender_name, sender_email_address, pickup_address, 
+def create_send_item_log(id, sender_name, sender_email_address, pickup_address, 
                          item, item_weight, receiver_name, receiver_phone, receiver_address,
                          sending_distance, sending_price):
     request_url = f"https://api.airtable.com/v0/{base_id}/{table_name}"
