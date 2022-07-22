@@ -35,7 +35,6 @@ nlu:
     - GOODBYE
     - See ya later
     - have a good day. time to go, bye
-    - bye bye
     - ok i gtg
     - bye bye bot
     - bye for now
@@ -49,8 +48,6 @@ nlu:
     - farewell
     - good bye
     - good bye rasa bot!
-    - good night
-    - goodbye
     - goodbye.
     - goodnight
     - gotta go
@@ -77,7 +74,6 @@ nlu:
     - sweet
     - cool,
     - yes...
-    - y
     - ok
     - ye
     - okay
@@ -142,17 +138,16 @@ nlu:
     - When do you open your office?
     - When can I come to your office?
     - When does your office open?
-- intent: nearest_dropoff
-  examples: |
-    - What is nearest drop off point?
-    - Where can i drop off my pacel?
-    - Where can i drop off my shipment?
-    - Where is the nearest drop off address?
-    - Where can i drop off my product?
-    - What is nearest dropoff point?
+# - intent: nearest_dropoff
+#   examples: |
+#     - What is nearest drop off point?
+#     - Where can i drop off my pacel?
+#     - Where can i drop off my shipment?
+#     - Where is the nearest drop off address?
+#     - Where can i drop off my product?
+#     - What is nearest dropoff point?
 - intent: inform
   examples: |
-    - What is nearest drop off point?
     - I want to send a [mango](item)
     - I want to send a [book](item)
     - I will be shipping a [diamond](item)
@@ -171,7 +166,6 @@ nlu:
     - I am to ship [Charger](item)
     - I am shipping [Phone](item)
     - I am sending [Pen](item)
-    - I will be shipping a [diamond](item)
     - the parcel is [40kg](item_weight)
     - the parcel weighs [5kg](item_weight)
     - 1 Carnaby Street, LONDON, W1F 9PS, UK
@@ -212,7 +206,8 @@ nlu:
     - [recwTyLeX5wXHkIFb](tracking_id)
     - [recYrrNkoLGIF4QyS]
     - [recpjRl4EWSugwBbZ](tracking_id) is my id
-    - my tracking id is [rectzaIuGBmxgQL6p](tracking_id)
+    - recG32gZlE2mT3y6a
+    - recctFIvscJwcBIsV
 - intent: send_parcel
   examples: |
     - I want to send a parcel
@@ -237,7 +232,7 @@ nlu:
     - Track my parcel
     - Track my item
     - What is the status of my order?
-
+    - I want to track my parcel
 - intent: request_cancel_order
   examples: |
     - Can I cancel my order?",
@@ -249,7 +244,8 @@ nlu:
     - I want to cancel my item
     - I am no longer sending my package.
     - I don't want to send my parcel again.
-- intent: help #to be added to domain
+    - I want to cancel my order
+- intent: help
   examples: |
     - help
     - what can you do?
@@ -267,13 +263,11 @@ nlu:
     - come back
     - cool! can I do something else here?
     - hello what can you do for me
-    - help
-    - help me
     - help please
     - help pls
     - help?
     - hep me
-- intent: stop_quit #to be added to domain
+- intent: stop_quit
   examples: |
     - I am no longer interested
     - I want to quit
@@ -286,7 +280,7 @@ nlu:
     - No longer interested
     - Cancel the process
     - I am not sending again.
-- intent: out_of_scope #to be added to domain
+- intent: out_of_scope
   examples: |
     - what is the square root of 5
     - I want to know the weather
@@ -317,3 +311,13 @@ nlu:
     - Give me a joke
     - Make me laugh
     - I need cheering up
+
+- intent: make_complain
+  examples: |
+    - I want to make a complain 
+    - I need to log an issue
+    - I want to complain about my order
+    - The product is bad, I want to make a complain 
+    - I want to file a complain 
+    - I want to lodge my damages report
+    - I want to make a report

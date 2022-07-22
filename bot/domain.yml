@@ -5,28 +5,26 @@ intents:
 - deny
 - goodbye
 - greet
+- help
 - inform:
     use_entities:
-      - tracking_id
-      - item
-      - Item_weight
-      - sender_email_address
-- mood_great
-- nearest_dropoff
+    - tracking_id
+    - item
+    - Item_weight
+    - sender_email_address
+- make_complain
 - opening_hours
+- request_cancel_order
 - send_parcel
+- stop_quit
 - thankyou
 - track_parcel
-- request_cancel_order
-- help
-- make_complain
-- stop_quit
 entities:
-- tracking_id
-- item
-- item_weight
-- sender_email_address
 - payment_method
+- item
+- sender_email_address
+- item_weight
+- tracking_id
 slots:
   sender_name:
     type: text
@@ -125,25 +123,20 @@ slots:
     influence_conversation: false
     mappings:
     - type: from_text
-  anything_else:
-    type: text
-    influence_conversation: true
-    mappings:
-    - type: custom
   sending_distance:
     type: float
     initial_value: 0
     influence_conversation: false
     mappings:
     - type: custom
+
   sending_price:
     type: float
     initial_value: 0
     influence_conversation: true
     mappings:
     - type: custom
-  
-  
+
 forms:
   delivery_form:
     required_slots:
@@ -157,12 +150,11 @@ forms:
     - receiver_phone
     - confirm_booking
     - payment_method
-    
 responses:
-  utter_happy:
-  - text: Great, carry on!
   utter_goodbye:
   - text: Thank you for stoping by, Bye! Come back again soon. For more info, please call 07478131521 to speak with our Business manager
+  - text: Have a nice day. For more info, please call 07478131521 to speak with our Business manager
+  - text: Bye! Come back again soon. For more info, please call 07478131521 to speak with our Business manager
   utter_iamabot:
   - text: I am a bot, powered by Rasa.
   utter_greet:
@@ -177,7 +169,6 @@ responses:
       - Hi, Can you track my parcel?
       - Can I cancel my order 
       - What's the status of the ticket I opened? I want to make a comaplain
-   
   utter_ask_sender_name:
   - text: What is the senders name?
   utter_ask_item:
@@ -196,14 +187,8 @@ responses:
   - text: What email address do you want to associate with this order?
   utter_ask_payment_method:
   - text: Great {sender_name}, how would you like to make payment, cash or bank transfer?
-  utter_bank_transfer:
-  - text: "Your order has been logged with bank transfer payment, your will be given to you at the end of the session, please make \tpayment with this order number to bla bla bla bank."
-  utter_cash_payment:
-  - text: Your order has been logged with cash payment.
-  utter_ask_anything_else:
-  - text: Would you like me to help you with anything else?
   utter_ask_confirm_booking:
-  - text:  Would you like to place and order now?
+  - text: Would you like to place and order now?
   utter_no_worries:
   - text: No problem :)
   utter_start_logging:
@@ -221,7 +206,6 @@ responses:
        - Receviver's Name: {receiver_phone}
        - Sender's Name: {sender_name}
        - Payment method: {payment_method}
-       - Price: {sending_price}
   utter_ask_tracking_id:
   - text: Sure then, please give me the tracking ID
   utter_confirm_cancel_order:
@@ -229,19 +213,18 @@ responses:
   utter_confirm_make_complain:
   - text: Are you sure you want to cancel your shipping order?
   utter_default:
-   - text: I didn't quit get that, could you give a more vivid response to the previous question?
-
-
+  - text: I didn't quit get that, could you give a more vivid response to the previous question? You can type"/restart' to start all over"
 actions:
 - action_end
 - action_get_tracking_status
 - action_make_complain
+- action_pandd
 - action_request_cancel_order
-- action_price_and_distance
 - action_set_tracking_id
 - action_submit_send_item
+- utter_ask_tracking_id
+- utter_confirm_cancel_order
 - utter_greet
-- utter_request_id
 - utter_slot_values
 - utter_start_logging
 - validate_delivery_form
