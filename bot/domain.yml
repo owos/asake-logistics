@@ -150,6 +150,7 @@ forms:
     - receiver_phone
     - confirm_booking
     - payment_method
+responses:
   utter_goodbye:
   - text: Thank you for stoping by, Bye! Come back again soon. For more info, please call 07478131521 to speak with our Business manager
   - text: Have a nice day. For more info, please call 07478131521 to speak with our Business manager
