@@ -259,8 +259,8 @@ class ValidateDeliveryForm(FormValidationAction):
         except:
             pass
 
-        return {"receiver_phone": slot_value}#, [SlotSet("sending_distance", total_dist), SlotSet("sending_price", total_price)] 
-
+        return {"receiver_phone": slot_value}#, 
+        
     def validate_confirm_booking(
         self,
         slot_value: Any,
@@ -299,10 +299,29 @@ class SetPriceandDistance(Action):
         dispatcher: CollectingDispatcher,
         tracker: Tracker,
         domain: Dict[Text, Any],
+        total_dist=total_dist,
+        
     ) -> List[Dict]:
         
         try:
+            regex_post = r"([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})"
+            #getting slot values and extracting post codes
+            pick_add = tracker.get_slot("pickup_address")
+            match = re.search(regex_post, pick_add)
+            pick_post = pick_add[match.start():match.end()]
+
+            receive_add = tracker.get_slot("receiver_address")
+            match = re.search(regex_post, receive_add)
+            receive_post = receive_add[match.start():match.end()]
             
+            #calculating distance
+            dist = pgeocode.GeoDistance('GB')
+            total_dist = dist.query_postal_code(pick_post, receive_post)/1000 +1 #in m
+            #setting price
+            price = 1 #in pounds
+            weight = tracker.get_slot("item_weight") #in kg
+            total_price = price * float(total_dist) * float(weight)
+            dispatcher.utter_message(f"We can do this, it might cost you  £{total_price} to make a delivery")
             return [SlotSet("sending_distance", total_dist), SlotSet("sending_price", total_price)]
         except:
             return [SlotSet("sending_distance", 1), SlotSet("sending_price", 1)]
