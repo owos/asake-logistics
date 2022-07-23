@@ -324,27 +324,6 @@ class ActionSubmitSendItem(Action):
         domain: Dict[Text, Any],
     ) -> List[Dict]:
 
-        try:
-            regex_post = r"([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})"
-            #getting slot values and extracting post codes
-            pick_add = tracker.get_slot("pickup_address")
-            match = re.search(regex_post, pick_add)
-            pick_post = pick_add[match.start():match.end()]
-
-            receive_add = tracker.get_slot("receiver_address")
-            match = re.search(regex_post, receive_add)
-            receive_post = receive_add[match.start():match.end()]
-            
-            #calculating distance
-            dist = pgeocode.GeoDistance('GB')
-            total_dist = dist.query_postal_code(pick_post, receive_post)/1000 +1 #in m
-            #setting price
-            price = 1 #in pounds
-            weight = tracker.get_slot("item_weight") #in kg
-            total_price = price * float(total_dist) * float(weight)
-        except:
-            pass
-
         item = tracker.get_slot("item")
         item_weight = tracker.get_slot("item_weight")
         receiver_address = tracker.get_slot("receiver_address")
@@ -353,9 +332,9 @@ class ActionSubmitSendItem(Action):
         sender_name = tracker.get_slot("sender_name")
         receiver_name = tracker.get_slot("receiver_name")
         receiver_phone = tracker.get_slot("receiver_phone")
-        sending_distance = total_dist# tracker.get_slot("sending_distance")
-        sending_price = total_price# tracker.get_slot("sending_price")
-         #generate global unique ID before submitting
+        sending_distance = tracker.get_slot("sending_distance")
+        sending_price = tracker.get_slot("sending_price")
+        #generate global unique ID before submitting
         global id 
         id = str(uuid.uuid4())
 
