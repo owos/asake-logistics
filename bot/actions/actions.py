@@ -234,8 +234,8 @@ class ValidateDeliveryForm(FormValidationAction):
         tracker: Tracker,
         domain: DomainDict) -> Dict[Text, Any]:
         
-
         try:
+            print('first stage')
             regex_post = r"([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})"
             #getting slot values and extracting post codes
             pick_add = tracker.get_slot("pickup_address")
@@ -255,8 +255,10 @@ class ValidateDeliveryForm(FormValidationAction):
             weight = tracker.get_slot("item_weight") #in kg
             global total_price
             total_price = price * float(total_dist) * float(weight)
-            dispatcher.utter_message(f"We can do this, it might cost you  £{total_price} to make a delivery")
+            dispatcher.utter_message(text=f"We can do this, it might cost you  £{total_price} to make a delivery")
+            print("last stage")
         except:
+            print("the pass stage")
             pass
 
         return {"receiver_phone": slot_value}#, 

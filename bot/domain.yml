@@ -13,6 +13,7 @@ intents:
     - Item_weight
     - sender_email_address
 - make_complain
+#- nearest_dropoff
 - opening_hours
 - request_cancel_order
 - send_parcel
@@ -20,11 +21,11 @@ intents:
 - thankyou
 - track_parcel
 entities:
-- payment_method
-- item
-- sender_email_address
-- item_weight
 - tracking_id
+- item
+- item_weight
+- sender_email_address
+- payment_method
 slots:
   sender_name:
     type: text
@@ -129,14 +130,12 @@ slots:
     influence_conversation: false
     mappings:
     - type: custom
-
   sending_price:
     type: float
     initial_value: 0
     influence_conversation: true
     mappings:
     - type: custom
-
 forms:
   delivery_form:
     required_slots:
@@ -153,8 +152,8 @@ forms:
 responses:
   utter_goodbye:
   - text: Thank you for stoping by, Bye! Come back again soon. For more info, please call 07478131521 to speak with our Business manager
-  - text: Have a nice day. For more info, please call 07478131521 to speak with our Business manager
-  - text: Bye! Come back again soon. For more info, please call 07478131521 to speak with our Business manager
+  - text: "Have a nice day. For more info, please call 07478131521 to speak with our Business manager"
+  - text: "Bye! Come back again soon. For more info, please call 07478131521 to speak with our Business manager"
   utter_iamabot:
   - text: I am a bot, powered by Rasa.
   utter_greet:
@@ -168,7 +167,7 @@ responses:
       - I want to send a parcel
       - Hi, Can you track my parcel?
       - Can I cancel my order 
-      -  I want to make a comaplain
+      - I want to make a comaplain
   utter_ask_sender_name:
   - text: What is the senders name?
   utter_ask_item:
@@ -218,7 +217,7 @@ actions:
 - action_end
 - action_get_tracking_status
 - action_make_complain
-- action_pandd
+- action_price_and_distance
 - action_request_cancel_order
 - action_set_tracking_id
 - action_submit_send_item
@@ -230,4 +229,4 @@ actions:
 - validate_delivery_form
 session_config:
   session_expiration_time: 60
-  carry_over_slots_to_new_session: false
+  carry_over_slots_to_new_session: true
