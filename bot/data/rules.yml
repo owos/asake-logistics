@@ -32,7 +32,7 @@ rules:
   - slot_was_set:
     - requested_slot: null
     - confirm_booking: true
-  - action: action_pandd
+  #- action: action_pandd
   - action: utter_slot_values
   - action: action_submit_send_item
   - action: action_set_tracking_id

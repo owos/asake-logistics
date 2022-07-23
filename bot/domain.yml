@@ -150,7 +150,6 @@ forms:
     - receiver_phone
     - confirm_booking
     - payment_method
-responses:
   utter_goodbye:
   - text: Thank you for stoping by, Bye! Come back again soon. For more info, please call 07478131521 to speak with our Business manager
   - text: Have a nice day. For more info, please call 07478131521 to speak with our Business manager
@@ -168,7 +167,7 @@ responses:
       - I want to send a parcel
       - Hi, Can you track my parcel?
       - Can I cancel my order 
-      - What's the status of the ticket I opened? I want to make a comaplain
+      -  I want to make a comaplain
   utter_ask_sender_name:
   - text: What is the senders name?
   utter_ask_item:
@@ -194,7 +193,7 @@ responses:
   utter_start_logging:
   - text: Would you like to make the booking now?
   utter_opening_hours:
-  - text: Our opening time is 9am to 6pm everyweekday
+  - text: Our opening time is 9am to 6pm every weekday
   utter_slot_values:
   - text: |-
       Here's your booking summary:
@@ -230,4 +229,4 @@ actions:
 - validate_delivery_form
 session_config:
   session_expiration_time: 60
-  carry_over_slots_to_new_session: true
+  carry_over_slots_to_new_session: false

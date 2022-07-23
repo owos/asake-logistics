@@ -350,7 +350,7 @@ class ActionSubmitSendItem(Action):
                 
             )
         dispatcher.utter_message("Thanks, your answers have been recorded!") # message to the user about the form
-        return []
+        return [SlotSet("sending_distance", total_dist), SlotSet("sending_price", total_price)]
 
 
 # get tracking status
