@@ -6,7 +6,7 @@ actions/secrets.py
 actions/__pycache__
 .config
 .keras
-
+chatbot-hogwarts/
 # Dockerfile
 .ipynb
 .csv

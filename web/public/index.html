@@ -1,10 +1,41 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Hogwarts</title>
+        <title>Asake Logistics</title>
     </head>
     <body>
-        <div id="rasa-chat-widget" data-websocket-url="http://rasa-server:8081/"></div>
-        <script src="https://unpkg.com/@rasahq/rasa-chat" type="application/javascript"></script>
+        <center>
+            <header>
+                <h1>Asake Logistics</h1>
+            </header>
+        </center>
+        <div id="webchat"></div>
+        <script>!(function () {
+        let e = document.createElement("script"),
+            t = document.head || document.getElementsByTagName("head")[0];
+        (e.src =
+            "https://cdn.jsdelivr.net/npm/rasa-webchat@1.0.1/lib/index.js"),
+            (e.async = !0),
+            (e.onload = () => {
+            window.WebChat.default(
+                {
+                customData: { language: "en" },
+                socketUrl: "http://rasa-server:8081",
+                socketPath: "/socket.io/",
+                title: "Asake Logistics",
+                subtitle: "",
+                inputTextFieldHint: "Type a message...",
+                showFullScreenButton: true,
+                displayUnreadCount: true,
+                params:{"storage": "session"}
+                },
+                null
+            );
+            }),
+            t.insertBefore(e, t.firstChild);
+        })();
+        </script>
     </body>
 </html>
+
+
