@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Chatbot Mágico</title>
-        <link rel="stylesheet" href="style.css">
+        <title>Asake Logistics</title>
     </head>
     <body>
         <center>
             <header>
-                <h1>Escola de Magia e Bruxaria Hogwarts</h1>
-                Aguarde o chat aparecer no canto direito inferior para começar a conversa...
+                <h1>Asake Logistics</h1>
             </header>
-            <img id="hogwarts-logo" src="./assets/hogwarts-logo.png" alt="Hogwarts Logo">
         </center>
         <div id="webchat"></div>
         <script>!(function () {
@@ -22,12 +19,12 @@
             (e.onload = () => {
             window.WebChat.default(
                 {
-                customData: { language: "pt" },
-                socketUrl: "http://localhost:5005",
+                customData: { language: "en" },
+                socketUrl: "http://rasa-server:8081",
                 socketPath: "/socket.io/",
-                title: "Chatbot Mágico",
+                title: "Asake Logistics",
                 subtitle: "",
-                inputTextFieldHint: "Digite uma mensagem...",
+                inputTextFieldHint: "Type a message...",
                 showFullScreenButton: true,
                 displayUnreadCount: true,
                 params:{"storage": "session"}
@@ -40,3 +37,5 @@
         </script>
     </body>
 </html>
+
+
