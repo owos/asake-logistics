@@ -158,7 +158,7 @@ responses:
   utter_iamabot:
   - text: I am a bot, powered by Rasa.
   utter_greet:
-  - text: Hello, thanks for visiting, how can I help you today? (if you're not sure, you can just type help)
+  - text: Hello, thanks for visiting, how can I help you today? #(if you're not sure, you can just type help)
   utter_out_of_scope:
   - text: Sorry, I'm not sure how to respond to that. Type "help" for assistance.
   utter_help:
